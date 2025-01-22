@@ -1,5 +1,5 @@
 #
-# MiniMario.py 2023/6/4
+# MiniMario.py 2025/1/22
 #
 import pyxel
 import random
@@ -118,17 +118,17 @@ class App:
     status = STATUS_TITLE
 
     def __init__(self):
-        pyxel.init(32*8, 32*8, title='Mini Mario')
+        pyxel.init(32*8, 32*8, title='Mini Mario 1.1')
         pyxel.load('assets/MiniMario.pyxres')
         pyxel.mouse(True)
         for y in range(256):
             for x in range(256):
-                self.map[x][y] = pyxel.tilemap(0).pget(x, y)
+                self.map[x][y] = pyxel.tilemaps[0].pget(x, y)
                 if self.map[x][y] == CHARA_KURIBO:
-                    pyxel.tilemap(0).pset(x,   y,   (0, 0))
-                    pyxel.tilemap(0).pset(x+1, y,   (0, 0))
-                    pyxel.tilemap(0).pset(x,   y+1, (0, 0))
-                    pyxel.tilemap(0).pset(x+1, y+1, (0, 0))
+                    pyxel.tilemaps[0].pset(x,   y,   (0, 0))
+                    pyxel.tilemaps[0].pset(x+1, y,   (0, 0))
+                    pyxel.tilemaps[0].pset(x,   y+1, (0, 0))
+                    pyxel.tilemaps[0].pset(x+1, y+1, (0, 0))
                     if self.round == 1:
                         self.togezo.append(Togezo(x*8, y*8))
                     elif self.round>1 and x<254 and y>2 and \
@@ -138,30 +138,30 @@ class App:
                         self.kuribo.append(Kuribo(x*8, y*8))
                 elif self.map[x][y] in CHARA_TOGEZO:
                     self.togezo.append(Togezo(x*8, y*8))
-                    pyxel.tilemap(0).pset(x,   y,   (0, 0))
-                    pyxel.tilemap(0).pset(x+1, y,   (0, 0))
-                    pyxel.tilemap(0).pset(x,   y+1, (0, 0))
-                    pyxel.tilemap(0).pset(x+1, y+1, (0, 0))
+                    pyxel.tilemaps[0].pset(x,   y,   (0, 0))
+                    pyxel.tilemaps[0].pset(x+1, y,   (0, 0))
+                    pyxel.tilemaps[0].pset(x,   y+1, (0, 0))
+                    pyxel.tilemaps[0].pset(x+1, y+1, (0, 0))
                 elif self.map[x][y] in CHARA_KUPPA:
                     self.kuppa.append(Kuppa(x*8, y*8))
                     for x1 in range(4):
                         for y1 in range(4):
-                            pyxel.tilemap(0).pset(x+x1, y+y1, (0, 0))
+                            pyxel.tilemaps[0].pset(x+x1, y+y1, (0, 0))
                 elif self.map[x][y] == CHARA_HODAI:
                     self.hodaikiller.append(HodaiKiller(x*8, y*8))
                 elif self.map[x][y] == WARPPIPE[0]:
-                    pyxel.tilemap(0).pset(x,   y,   ( 81%32,  81//32))
-                    pyxel.tilemap(0).pset(x+1, y,   ( 82%32,  82//32))
-                    pyxel.tilemap(0).pset(x,   y+1, (113%32, 113//32))
-                    pyxel.tilemap(0).pset(x+1, y+1, (114%32, 114//32))
+                    pyxel.tilemaps[0].pset(x,   y,   ( 81%32,  81//32))
+                    pyxel.tilemaps[0].pset(x+1, y,   ( 82%32,  82//32))
+                    pyxel.tilemaps[0].pset(x,   y+1, (113%32, 113//32))
+                    pyxel.tilemaps[0].pset(x+1, y+1, (114%32, 114//32))
                 elif self.map[x][y] == CHARA_KINOPIO or self.map[x][y] == CHARA_PEACH:
                     self.rescue.append(Rescue(x*8, y*8))
-                    pyxel.tilemap(0).pset(x,   y,   (0, 0))
-                    pyxel.tilemap(0).pset(x+1, y,   (0, 0))
-                    pyxel.tilemap(0).pset(x,   y+1, (0, 0))
-                    pyxel.tilemap(0).pset(x+1, y+1, (0, 0))
-                    pyxel.tilemap(0).pset(x,   y+2, (0, 0))
-                    pyxel.tilemap(0).pset(x+1, y+2, (0, 0))
+                    pyxel.tilemaps[0].pset(x,   y,   (0, 0))
+                    pyxel.tilemaps[0].pset(x+1, y,   (0, 0))
+                    pyxel.tilemaps[0].pset(x,   y+1, (0, 0))
+                    pyxel.tilemaps[0].pset(x+1, y+1, (0, 0))
+                    pyxel.tilemaps[0].pset(x,   y+2, (0, 0))
+                    pyxel.tilemaps[0].pset(x+1, y+2, (0, 0))
         self.setdemomap()
         pyxel.run(self.update, self.draw)
 
@@ -245,7 +245,7 @@ class App:
     def gettilemap(self, x, y):
         if x < 0 or x >= 256*8 or y < 0 or y >= 256:
             return -1
-        return pyxel.tilemap(0).pget(x//8, self.map_y8+y//8)
+        return pyxel.tilemaps[0].pget(x//8, self.map_y8+y//8)
 
     def getmap(self, x, y):
         if x<0 or x>=256*8 or y<0 or y>=256:
@@ -256,25 +256,25 @@ class App:
         if 0 <= x < 256 and 0 <= y < 256:
             if self.map[x][y] == BRICK_NORMAL[0] or self.map[x][y] == BRICK_COIN[0] \
                     or self.map[x][y] == BRICK_MUSHROOM[0]:
-                pyxel.tilemap(0).pset(x  , y  , BRICK_NORMAL[0])
-                pyxel.tilemap(0).pset(x+1, y  , BRICK_NORMAL[0])
-                pyxel.tilemap(0).pset(x  , y+1, BRICK_NORMAL[1])
-                pyxel.tilemap(0).pset(x+1, y+1, BRICK_NORMAL[1])
+                pyxel.tilemaps[0].pset(x  , y  , BRICK_NORMAL[0])
+                pyxel.tilemaps[0].pset(x+1, y  , BRICK_NORMAL[0])
+                pyxel.tilemaps[0].pset(x  , y+1, BRICK_NORMAL[1])
+                pyxel.tilemaps[0].pset(x+1, y+1, BRICK_NORMAL[1])
             if self.map[x][y] == QUESTION_COIN[0] or self.map[x][y] == QUESTION_MUSHROOM[0]:
-                pyxel.tilemap(0).pset(x  , y  , QUESTION_COIN[0])
-                pyxel.tilemap(0).pset(x+1, y  , QUESTION_COIN[1])
-                pyxel.tilemap(0).pset(x  , y+1, QUESTION_COIN[2])
-                pyxel.tilemap(0).pset(x+1, y+1, QUESTION_COIN[3])
+                pyxel.tilemaps[0].pset(x  , y  , QUESTION_COIN[0])
+                pyxel.tilemaps[0].pset(x+1, y  , QUESTION_COIN[1])
+                pyxel.tilemaps[0].pset(x  , y+1, QUESTION_COIN[2])
+                pyxel.tilemaps[0].pset(x+1, y+1, QUESTION_COIN[3])
             if self.map[x][y] == HIDDEN_COIN[0] or self.map[x][y] == HIDDEN_MUSHROOM[0]:
-                pyxel.tilemap(0).pset(x  , y  , (0, 0))
-                pyxel.tilemap(0).pset(x+1, y  , (0, 0))
-                pyxel.tilemap(0).pset(x  , y+1, (0, 0))
-                pyxel.tilemap(0).pset(x+1, y+1, (0, 0))
+                pyxel.tilemaps[0].pset(x  , y  , (0, 0))
+                pyxel.tilemaps[0].pset(x+1, y  , (0, 0))
+                pyxel.tilemaps[0].pset(x  , y+1, (0, 0))
+                pyxel.tilemaps[0].pset(x+1, y+1, (0, 0))
             if self.map[x][y] == MAP_COIN[0]:
-                pyxel.tilemap(0).pset(x  , y  , MAP_COIN[0])
-                pyxel.tilemap(0).pset(x+1, y  , MAP_COIN[1])
-                pyxel.tilemap(0).pset(x  , y+1, MAP_COIN[2])
-                pyxel.tilemap(0).pset(x+1, y+1, MAP_COIN[3])
+                pyxel.tilemaps[0].pset(x  , y  , MAP_COIN[0])
+                pyxel.tilemaps[0].pset(x+1, y  , MAP_COIN[1])
+                pyxel.tilemaps[0].pset(x  , y+1, MAP_COIN[2])
+                pyxel.tilemaps[0].pset(x+1, y+1, MAP_COIN[3])
 
     def getcoin(self):
         pyxel.play(3, 0) # Coin Sound
@@ -503,31 +503,31 @@ class App:
             if self.brick[i].update():
                 c = self.map[self.brick[i].init_x//8][self.brick[i].init_y//8]
                 if c == BRICK_MUSHROOM[0] or c == HIDDEN_MUSHROOM[0]:
-                    pyxel.tilemap(0).pset(self.brick[i].init_x//8  , self.brick[i].init_y//8  , EMPTY_BLOCK[0])
-                    pyxel.tilemap(0).pset(self.brick[i].init_x//8+1, self.brick[i].init_y//8  , EMPTY_BLOCK[1])
-                    pyxel.tilemap(0).pset(self.brick[i].init_x//8  , self.brick[i].init_y//8+1, EMPTY_BLOCK[2])
-                    pyxel.tilemap(0).pset(self.brick[i].init_x//8+1, self.brick[i].init_y//8+1, EMPTY_BLOCK[3])
+                    pyxel.tilemaps[0].pset(self.brick[i].init_x//8  , self.brick[i].init_y//8  , EMPTY_BLOCK[0])
+                    pyxel.tilemaps[0].pset(self.brick[i].init_x//8+1, self.brick[i].init_y//8  , EMPTY_BLOCK[1])
+                    pyxel.tilemaps[0].pset(self.brick[i].init_x//8  , self.brick[i].init_y//8+1, EMPTY_BLOCK[2])
+                    pyxel.tilemaps[0].pset(self.brick[i].init_x//8+1, self.brick[i].init_y//8+1, EMPTY_BLOCK[3])
                     self.mushroom = Mushroom(self.brick[i].init_x, self.brick[i].init_y-16)
                 elif c == BRICK_COIN[0] or c == HIDDEN_COIN[0]:
-                    pyxel.tilemap(0).pset(self.brick[i].init_x//8  , self.brick[i].init_y//8  , EMPTY_BLOCK[0])
-                    pyxel.tilemap(0).pset(self.brick[i].init_x//8+1, self.brick[i].init_y//8  , EMPTY_BLOCK[1])
-                    pyxel.tilemap(0).pset(self.brick[i].init_x//8  , self.brick[i].init_y//8+1, EMPTY_BLOCK[2])
-                    pyxel.tilemap(0).pset(self.brick[i].init_x//8+1, self.brick[i].init_y//8+1, EMPTY_BLOCK[3])
+                    pyxel.tilemaps[0].pset(self.brick[i].init_x//8  , self.brick[i].init_y//8  , EMPTY_BLOCK[0])
+                    pyxel.tilemaps[0].pset(self.brick[i].init_x//8+1, self.brick[i].init_y//8  , EMPTY_BLOCK[1])
+                    pyxel.tilemaps[0].pset(self.brick[i].init_x//8  , self.brick[i].init_y//8+1, EMPTY_BLOCK[2])
+                    pyxel.tilemaps[0].pset(self.brick[i].init_x//8+1, self.brick[i].init_y//8+1, EMPTY_BLOCK[3])
                     self.blockcoin = BlockCoin(self.brick[i].init_x, self.brick[i].init_y-16)
                 elif self.brick[i].item != ITEM_BREAK:
-                    pyxel.tilemap(0).pset(self.brick[i].init_x//8  , self.brick[i].init_y//8  , BRICK_NORMAL[0])
-                    pyxel.tilemap(0).pset(self.brick[i].init_x//8+1, self.brick[i].init_y//8  , BRICK_NORMAL[0])
-                    pyxel.tilemap(0).pset(self.brick[i].init_x//8  , self.brick[i].init_y//8+1, BRICK_NORMAL[1])
-                    pyxel.tilemap(0).pset(self.brick[i].init_x//8+1, self.brick[i].init_y//8+1, BRICK_NORMAL[1])
+                    pyxel.tilemaps[0].pset(self.brick[i].init_x//8  , self.brick[i].init_y//8  , BRICK_NORMAL[0])
+                    pyxel.tilemaps[0].pset(self.brick[i].init_x//8+1, self.brick[i].init_y//8  , BRICK_NORMAL[0])
+                    pyxel.tilemaps[0].pset(self.brick[i].init_x//8  , self.brick[i].init_y//8+1, BRICK_NORMAL[1])
+                    pyxel.tilemaps[0].pset(self.brick[i].init_x//8+1, self.brick[i].init_y//8+1, BRICK_NORMAL[1])
                 del self.brick[i]
 
         # Question
         for i in reversed(range(len(self.question))):
             if self.question[i].update():
-                pyxel.tilemap(0).pset(self.question[i].init_x//8  , self.question[i].init_y//8  , EMPTY_BLOCK[0])
-                pyxel.tilemap(0).pset(self.question[i].init_x//8+1, self.question[i].init_y//8  , EMPTY_BLOCK[1])
-                pyxel.tilemap(0).pset(self.question[i].init_x//8  , self.question[i].init_y//8+1, EMPTY_BLOCK[2])
-                pyxel.tilemap(0).pset(self.question[i].init_x//8+1, self.question[i].init_y//8+1, EMPTY_BLOCK[3])
+                pyxel.tilemaps[0].pset(self.question[i].init_x//8  , self.question[i].init_y//8  , EMPTY_BLOCK[0])
+                pyxel.tilemaps[0].pset(self.question[i].init_x//8+1, self.question[i].init_y//8  , EMPTY_BLOCK[1])
+                pyxel.tilemaps[0].pset(self.question[i].init_x//8  , self.question[i].init_y//8+1, EMPTY_BLOCK[2])
+                pyxel.tilemaps[0].pset(self.question[i].init_x//8+1, self.question[i].init_y//8+1, EMPTY_BLOCK[3])
                 if self.map[self.question[i].init_x//8][self.question[i].init_y//8] == QUESTION_MUSHROOM[0]:
                     self.mushroom = Mushroom(self.question[i].init_x, self.question[i].init_y-16)
                 else:
@@ -573,10 +573,10 @@ class App:
                         not(up2 in BRICK_NORMAL or (up2==(0, 0) and upm2 in HIDDEN_ALL))): # Left-Brick
                     x = (self.player_x+self.map_x+ 2)//16*2
                     y = (self.map_y8*8+self.player_y)//16*2
-                    pyxel.tilemap(0).pset(x,   y  , (1, 0))
-                    pyxel.tilemap(0).pset(x+1, y  , (1, 0))
-                    pyxel.tilemap(0).pset(x,   y+1, (1, 0))
-                    pyxel.tilemap(0).pset(x+1, y+1, (1, 0))
+                    pyxel.tilemaps[0].pset(x,   y  , (1, 0))
+                    pyxel.tilemaps[0].pset(x+1, y  , (1, 0))
+                    pyxel.tilemaps[0].pset(x,   y+1, (1, 0))
+                    pyxel.tilemaps[0].pset(x+1, y+1, (1, 0))
                     if upm1 in BRICK_COIN or upm1 in HIDDEN_COIN:
                         self.getcoin()
                         self.brick.append(Brick(x*8, y*8, ITEM_COIN))
@@ -584,10 +584,10 @@ class App:
                         pyxel.play(3, 27) # Item Block Sound
                         self.brick.append(Brick(x*8, y*8, ITEM_MUSHROOM))
                     elif self.issupermario:
-                        pyxel.tilemap(0).pset(x,   y  , (0, 0))
-                        pyxel.tilemap(0).pset(x+1, y  , (0, 0))
-                        pyxel.tilemap(0).pset(x,   y+1, (0, 0))
-                        pyxel.tilemap(0).pset(x+1, y+1, (0, 0))
+                        pyxel.tilemaps[0].pset(x,   y  , (0, 0))
+                        pyxel.tilemaps[0].pset(x+1, y  , (0, 0))
+                        pyxel.tilemaps[0].pset(x,   y+1, (0, 0))
+                        pyxel.tilemaps[0].pset(x+1, y+1, (0, 0))
                         self.score += 50
                         self.brick.append(Brick(x*8, y*8, ITEM_BREAK))
                     else:
@@ -595,10 +595,10 @@ class App:
                 elif up2 in BRICK_NORMAL or (up2==(0, 0) and upm2 in HIDDEN_ALL): # Right-Brick
                     x = (self.player_x+self.map_x+13)//16*2
                     y = (self.map_y8*8+self.player_y)//16*2
-                    pyxel.tilemap(0).pset(x,   y  , (1, 0))
-                    pyxel.tilemap(0).pset(x+1, y  , (1, 0))
-                    pyxel.tilemap(0).pset(x,   y+1, (1, 0))
-                    pyxel.tilemap(0).pset(x+1, y+1, (1, 0))
+                    pyxel.tilemaps[0].pset(x,   y  , (1, 0))
+                    pyxel.tilemaps[0].pset(x+1, y  , (1, 0))
+                    pyxel.tilemaps[0].pset(x,   y+1, (1, 0))
+                    pyxel.tilemaps[0].pset(x+1, y+1, (1, 0))
                     if upm2 in BRICK_COIN or upm2 in HIDDEN_COIN:
                         self.getcoin()
                         self.brick.append(Brick(x*8, y*8, ITEM_COIN))
@@ -606,10 +606,10 @@ class App:
                         pyxel.play(3, 27) # Item Block Sound
                         self.brick.append(Brick(x*8, y*8, ITEM_MUSHROOM))
                     elif self.issupermario:
-                        pyxel.tilemap(0).pset(x,   y  , (0, 0))
-                        pyxel.tilemap(0).pset(x+1, y  , (0, 0))
-                        pyxel.tilemap(0).pset(x,   y+1, (0, 0))
-                        pyxel.tilemap(0).pset(x+1, y+1, (0, 0))
+                        pyxel.tilemaps[0].pset(x,   y  , (0, 0))
+                        pyxel.tilemaps[0].pset(x+1, y  , (0, 0))
+                        pyxel.tilemaps[0].pset(x,   y+1, (0, 0))
+                        pyxel.tilemaps[0].pset(x+1, y+1, (0, 0))
                         self.score += 50
                         self.brick.append(Brick(x*8, y*8, ITEM_BREAK))
                     else:
@@ -618,10 +618,10 @@ class App:
                         or (up1 in QUESTION_COIN and not up2 in QUESTION_COIN): # ?-Block
                     x = (self.player_x+self.map_x+ 2)//16*2
                     y = (self.map_y8*8+self.player_y)//16*2
-                    pyxel.tilemap(0).pset(x,   y  , (1, 0))
-                    pyxel.tilemap(0).pset(x+1, y  , (1, 0))
-                    pyxel.tilemap(0).pset(x,   y+1, (1, 0))
-                    pyxel.tilemap(0).pset(x+1, y+1, (1, 0))
+                    pyxel.tilemaps[0].pset(x,   y  , (1, 0))
+                    pyxel.tilemaps[0].pset(x+1, y  , (1, 0))
+                    pyxel.tilemaps[0].pset(x,   y+1, (1, 0))
+                    pyxel.tilemaps[0].pset(x+1, y+1, (1, 0))
                     if upm1 in QUESTION_COIN:
                         self.getcoin()
                     elif upm1 in QUESTION_MUSHROOM:
@@ -630,10 +630,10 @@ class App:
                 elif up2 in QUESTION_COIN:
                     x = (self.player_x+self.map_x+13)//16*2
                     y = (self.map_y8*8+self.player_y)//16*2
-                    pyxel.tilemap(0).pset(x,   y  , (1, 0))
-                    pyxel.tilemap(0).pset(x+1, y  , (1, 0))
-                    pyxel.tilemap(0).pset(x,   y+1, (1, 0))
-                    pyxel.tilemap(0).pset(x+1, y+1, (1, 0))
+                    pyxel.tilemaps[0].pset(x,   y  , (1, 0))
+                    pyxel.tilemaps[0].pset(x+1, y  , (1, 0))
+                    pyxel.tilemaps[0].pset(x,   y+1, (1, 0))
+                    pyxel.tilemaps[0].pset(x+1, y+1, (1, 0))
                     if upm2 in QUESTION_COIN:
                         self.getcoin()
                     elif upm2 in QUESTION_MUSHROOM:
@@ -802,10 +802,10 @@ class App:
         if center in MAP_COIN:
             x = (self.map_x   +self.player_x+7)//16*2
             y = (self.map_y8*8+self.player_y+7)//16*2
-            pyxel.tilemap(0).pset(x  , y  , (0, 0))
-            pyxel.tilemap(0).pset(x+1, y  , (0, 0))
-            pyxel.tilemap(0).pset(x  , y+1, (0, 0))
-            pyxel.tilemap(0).pset(x+1, y+1, (0, 0))
+            pyxel.tilemaps[0].pset(x  , y  , (0, 0))
+            pyxel.tilemaps[0].pset(x+1, y  , (0, 0))
+            pyxel.tilemaps[0].pset(x  , y+1, (0, 0))
+            pyxel.tilemaps[0].pset(x+1, y+1, (0, 0))
             self.getcoin()
 
         # Goal
@@ -1062,7 +1062,7 @@ class Mushroom:
     def gettilemap(self, x, y, map_y8):
         if x < 0 or x >= 256*8 or y < map_y8*8 or y >=  map_y8*8+256:
             return -1
-        return pyxel.tilemap(0).pget(x//8, y//8)
+        return pyxel.tilemaps[0].pget(x//8, y//8)
 
     def update(self, map_x, map_y8, player_x, player_y, player_dy, brick, question):
         if self.count < 16:
@@ -1164,7 +1164,7 @@ class Kuribo:
     def gettilemap(self, x, y, map_y8):
         if x < 0 or x >= 256*8 or y < map_y8*8 or y >=  map_y8*8+256:
             return -1
-        return pyxel.tilemap(0).pget(x//8, y//8)
+        return pyxel.tilemaps[0].pget(x//8, y//8)
 
     def attack(self, player_dy):
         if player_dy > 0: # 踏みつけ
@@ -1271,7 +1271,7 @@ class Kuppa:
     def gettilemap(self, x, y, map_y8):
         if x < 0 or x >= 256*8 or y < map_y8*8 or y >=  map_y8*8+256:
             return -1
-        return pyxel.tilemap(0).pget(x//8, y//8)
+        return pyxel.tilemaps[0].pget(x//8, y//8)
 
     def update(self, map_x, map_y8, player_x, player_y, player_dy, brick, question, firebreath):
         if not self.alive:
@@ -1503,7 +1503,7 @@ class Rescue:
     def gettilemap(self, x, y, map_y8):
         if x < 0 or x >= 256*8 or y < map_y8*8 or y >=  map_y8*8+256:
             return -1
-        return pyxel.tilemap(0).pget(x//8, y//8)
+        return pyxel.tilemaps[0].pget(x//8, y//8)
 
     def update(self, map_x, map_y8, player_x, player_y, player_dy):
         if not self.alive:
